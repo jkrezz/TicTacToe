@@ -48,6 +48,14 @@ namespace TicTacToe
             return false;
         }
 
+        private bool CheckForDraw()
+        {
+            foreach (int? cell in _board)
+            {
+                if (cell == null) return false;
+            }
+            return true;
+        }
 
         // Рестарт игры
         private void ResetGame()
