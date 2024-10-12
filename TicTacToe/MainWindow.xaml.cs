@@ -26,6 +26,29 @@ namespace TicTacToe
             _cells = new Rectangle[] { Cell0, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8 };
         }
 
+        private bool CheckForWin()
+        {
+            int[,] winPatterns = new int[,]
+            {
+                { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 },
+                { 0, 3, 6 }, { 1, 4, 7 }, { 2, 5, 8 },
+                { 0, 4, 8 }, { 2, 4, 6 }
+            };
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (_board[winPatterns[i, 0]] != null &&
+                    _board[winPatterns[i, 0]] == _board[winPatterns[i, 1]] &&
+                    _board[winPatterns[i, 1]] == _board[winPatterns[i, 2]])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
         // Рестарт игры
         private void ResetGame()
         {
