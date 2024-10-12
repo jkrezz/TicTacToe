@@ -26,6 +26,74 @@ namespace TicTacToe
             _cells = new Rectangle[] { Cell0, Cell1, Cell2, Cell3, Cell4, Cell5, Cell6, Cell7, Cell8 };
         }
 
+        private void Cell_MouseClick(object sender, MouseButtonEventArgs e)
+        {
+            Rectangle? cell = sender as Rectangle;
+            int index = int.Parse(cell.Name.Replace("Cell", ""));
+
+            if (_board[index] == null)
+            {
+                _board[index] = _isXTurn ? 1 : 2;
+                DrawSymbol(cell, _board[index]);
+                _isXTurn = !_isXTurn;
+
+                if (CheckForWin())
+                {
+                    MessageBox.Show($"P{_board[index]} win!");
+                    ResetGame();
+                }
+                else if (CheckForDraw())
+                {
+                    MessageBox.Show("Draw!");
+                    ResetGame();
+                }
+            }
+        }
+        private void DrawSymbol(Rectangle cell, int? symbol)
+        {
+            double left = Canvas.GetLeft(cell);
+            double top = Canvas.GetTop(cell);
+
+            if (symbol == 1)
+            {
+                Line line1 = new Line
+                {
+                    X1 = left + 10,
+                    Y1 = top + 10,
+                    X2 = left + 90,
+                    Y2 = top + 90,
+                    Stroke = Brushes.Red,
+                    StrokeThickness = 4
+                };
+
+                Line line2 = new Line
+                {
+                    X1 = left + 90,
+                    Y1 = top + 10,
+                    X2 = left + 10,
+                    Y2 = top + 90,
+                    Stroke = Brushes.Red,
+                    StrokeThickness = 4
+                };
+
+                Game.Children.Add(line1);
+                Game.Children.Add(line2);
+            }
+            else
+            {
+                Ellipse ellipse = new Ellipse
+                {
+                    Width = 80,
+                    Height = 80,
+                    Stroke = Brushes.Blue,
+                    StrokeThickness = 4,
+                    Margin = new Thickness(left + 10, top + 10, 0, 0)
+                };
+                Game.Children.Add(ellipse);
+            }
+
+        }
+
         private bool CheckForWin()
         {
             int[,] winPatterns = new int[,]
